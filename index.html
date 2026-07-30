@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Văn Học Trung Đại Việt Nam - Chuẩn Học Thuật & Sư Phạm GDPT 2018</title>
+  <meta name="description" content="Trang web lưu trữ tác phẩm, tra cứu dịch song song Chữ Hán - Nôm, giải nghĩa Điển tích, soi luật Bằng-Trắc, kho tài liệu Word/PPT/PDF, kho Slide giảng dạy, liên kết trò chơi Kahoot/Quizizz/Wordwall và bộ tạo so sánh văn bản.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Left Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">文</div>
+        <div class="logo-title">
+          <h1>Văn Học Trung Đại</h1>
+          <p>Giảng Dạy & Tra Cứu</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-view="library">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <span>Thư Viện Tác Phẩm</span>
+        </a>
+        <a class="nav-item" data-view="reader">
+          <i class="fa-solid fa-scroll"></i>
+          <span>Đọc Hán - Nôm & Tra Cứu</span>
+        </a>
+        <a class="nav-item" data-view="slide-builder">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>Slide Giảng Dạy</span>
+        </a>
+        <a class="nav-item" data-view="documents">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Kho Tài Liệu (Word/PPT/PDF)</span>
+        </a>
+        <a class="nav-item" data-view="games">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Trò Chơi Học Tập (Kahoot...)</span>
+        </a>
+        <a class="nav-item" data-view="comparative">
+          <i class="fa-solid fa-columns"></i>
+          <span>So Sánh Văn Bản</span>
+        </a>
+        <a class="nav-item" data-view="authors">
+          <i class="fa-solid fa-users-viewfinder"></i>
+          <span>Tác Giả Tiêu Biểu</span>
+        </a>
+        <a class="nav-item" data-view="periods">
+          <i class="fa-solid fa-timeline"></i>
+          <span>Tiến Trình Lịch Sử</span>
+        </a>
+        <a class="nav-item" data-view="writing">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span>Viết Ngắn GDPT 2018</span>
+        </a>
+        <a class="nav-item" data-view="quizzes">
+          <i class="fa-solid fa-circle-question"></i>
+          <span>Câu Hỏi Củng Cố</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="ambient-audio-btn" onclick="const playing = ambientPlayer.toggle(); this.querySelector('span').innerText = playing ? 'Tắt Âm Nhạc Dân Tộc' : 'Phát Nhạc Đàn Tranh';">
+          <i class="fa-solid fa-music"></i>
+          <span>Phát Nhạc Đàn Tranh</span>
+        </button>
+
+        <button class="theme-toggle-btn" onclick="app.toggleTheme()">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          <span>Chế độ Sáng / Tối</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="global-search" placeholder="Tìm tác phẩm (Bình Ngô Đại Cáo, Truyện Kiều, Hịch Tướng Sĩ...)...">
+        </div>
+
+        <div class="header-actions">
+          <button class="btn btn-outline" onclick="app.renderView('slide-builder')">
+            <i class="fa-solid fa-chalkboard-user"></i> Slide Giảng Dạy
+          </button>
+          <button class="btn btn-primary" onclick="app.renderView('library')">
+            <i class="fa-solid fa-house"></i> Trang Chủ
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <main class="content-body" id="app-content-body">
+        <!-- Rendered dynamically by app.js -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/mindmap.js"></script>
+  <script src="js/documents.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/slides.js"></script>
+  <script src="js/reader.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
