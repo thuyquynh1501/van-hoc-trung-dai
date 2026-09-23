@@ -12,67 +12,33 @@ class GamesManager {
     try {
       const stored = localStorage.getItem('MEDIEVAL_GAMES');
       if (stored) {
-        this.games = JSON.parse(stored);
-      } else {
-        // Preset literature games
-        this.games = [
-          {
-            id: "game-1",
-            title: "Kahoot: Đấu Trí Hào Khí Đông A & Bình Ngô Đại Cáo",
-            platform: "kahoot",
-            platformName: "Kahoot!",
-            gamePin: "582 910",
-            workTitle: "Bình Ngô Đại Cáo",
-            description: "Trò chơi khởi động 10 câu hỏi trắc nghiệm nhanh về bối cảnh lịch sử và tư tưởng Nhân nghĩa.",
-            url: "https://kahoot.it/",
-            color: "#46178F"
-          },
-          {
-            id: "game-2",
-            title: "Quizizz: Đua Xe Tri Thức - Chị Em Thúy Kiều",
-            platform: "quizizz",
-            platformName: "Quizizz",
-            gamePin: "847291",
-            workTitle: "Truyện Kiều",
-            description: "Trò chơi đua xe tốc độ thử thách khả năng nhận diện bút pháp ước lệ tượng trưng.",
-            url: "https://quizizz.com/join",
-            color: "#8854D0"
-          },
-          {
-            id: "game-3",
-            title: "Wordwall: Vòng Quay May Mắn - Điển Tích Điển Cố Hán-Nôm",
-            platform: "wordwall",
-            platformName: "Wordwall",
-            gamePin: "",
-            workTitle: "Tất cả tác phẩm",
-            description: "Vòng quay ngẫu nhiên gọi tên học sinh giải nghĩa điển tích (Tố nga, Thu thủy, Trúc Nam Sơn...).",
-            url: "https://wordwall.net/vi",
-            color: "#20BF6B"
-          },
-          {
-            id: "game-4",
-            title: "Quizlet: Thẻ Flashcard Từ Hán-Việt & Luật Thơ Đường Luật",
-            platform: "quizlet",
-            platformName: "Quizlet",
-            gamePin: "",
-            workTitle: "Thơ Nôm Đường Luật",
-            description: "Bộ thẻ lật thông minh luyện nhớ các nốt Bằng-Trắc, Niêm, Vần và từ Hán-Việt cổ.",
-            url: "https://quizlet.com/",
-            color: "#4257B2"
-          }
-        ];
-        this.saveGamesToStorage();
+        const storedGames = JSON.parse(stored);
+        if (storedGames && storedGames.length > 0) {
+          this.games = storedGames;
+        }
       }
     } catch (e) {
-      console.warn("Could not access LocalStorage for games", e);
+      console.warn("Could not load games", e);
+    }
+    
+    if (window.FirestoreSync) {
+      FirestoreSync.listen('MEDIEVAL_GAMES', (data) => {
+        if (data) {
+          this.games = data;
+          this.renderGamesView();
+        }
+      });
     }
   }
 
   saveGamesToStorage() {
     try {
       localStorage.setItem('MEDIEVAL_GAMES', JSON.stringify(this.games));
+      if (window.FirestoreSync) {
+        FirestoreSync.save('MEDIEVAL_GAMES', this.games);
+      }
     } catch (e) {
-      console.warn("Could not save games to LocalStorage", e);
+      console.warn("Could not save games", e);
     }
   }
 

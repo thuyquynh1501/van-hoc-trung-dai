@@ -30,7 +30,6 @@ class MedievalApp {
 
   loadAllStorageData() {
     try {
-      // Load Custom Works
       const storedWorks = localStorage.getItem('CUSTOM_MEDIEVAL_WORKS');
       if (storedWorks) {
         const customWorks = JSON.parse(storedWorks);
@@ -41,7 +40,6 @@ class MedievalApp {
         });
       }
 
-      // Load Custom Authors
       const storedAuthors = localStorage.getItem('CUSTOM_MEDIEVAL_AUTHORS');
       if (storedAuthors) {
         const customAuthors = JSON.parse(storedAuthors);
@@ -52,7 +50,6 @@ class MedievalApp {
         });
       }
 
-      // Load Custom Periods
       const storedPeriods = localStorage.getItem('CUSTOM_MEDIEVAL_PERIODS');
       if (storedPeriods) {
         const customPeriods = JSON.parse(storedPeriods);
@@ -63,7 +60,6 @@ class MedievalApp {
         });
       }
 
-      // Load Custom Writing Prompts
       const storedWriting = localStorage.getItem('CUSTOM_MEDIEVAL_WRITING');
       if (storedWriting) {
         const customWriting = JSON.parse(storedWriting);
@@ -73,14 +69,64 @@ class MedievalApp {
           }
         });
       }
+      const storedSlides = localStorage.getItem('CUSTOM_MEDIEVAL_SLIDES');
+      if (storedSlides) {
+        const customSlides = JSON.parse(storedSlides);
+        customSlides.forEach(slideData => {
+          const work = MEDIEVAL_DATA.works.find(w => w.id === slideData.workId);
+          if (work) work.slides = slideData.slides;
+        });
+      }
     } catch (e) {
       console.warn("Could not load storage data", e);
+    }
+    
+    // Firebase Real-time Listeners
+    if (window.FirestoreSync) {
+      FirestoreSync.listen('CUSTOM_MEDIEVAL_SLIDES', (data) => {
+        if (!data) return;
+        data.forEach(slideData => {
+          const work = MEDIEVAL_DATA.works.find(w => w.id === slideData.workId);
+          if (work) work.slides = slideData.slides;
+        });
+        if(this.currentView === 'slide-builder') this.renderView('slide-builder');
+      });
+      FirestoreSync.listen('CUSTOM_MEDIEVAL_WORKS', (data) => {
+        if (!data) return;
+        MEDIEVAL_DATA.works = MEDIEVAL_DATA.works.filter(w => !w.id.startsWith('custom-work-'));
+        MEDIEVAL_DATA.works.unshift(...data);
+        if(this.currentView === 'library') this.renderWorksGrid();
+      });
+
+      FirestoreSync.listen('CUSTOM_MEDIEVAL_AUTHORS', (data) => {
+        if (!data) return;
+        MEDIEVAL_DATA.authors = MEDIEVAL_DATA.authors.filter(a => !a.id.startsWith('custom-author-'));
+        MEDIEVAL_DATA.authors.unshift(...data);
+        if(this.currentView === 'authors') this.renderView('authors');
+      });
+
+      FirestoreSync.listen('CUSTOM_MEDIEVAL_PERIODS', (data) => {
+        if (!data) return;
+        MEDIEVAL_DATA.periods = MEDIEVAL_DATA.periods.filter(p => !p.id.startsWith('custom-period-'));
+        MEDIEVAL_DATA.periods.push(...data);
+        if(this.currentView === 'periods') this.renderView('periods');
+      });
+
+      FirestoreSync.listen('CUSTOM_MEDIEVAL_WRITING', (data) => {
+        if (!data) return;
+        MEDIEVAL_DATA.writingPromptsList = MEDIEVAL_DATA.writingPromptsList.filter(wp => !wp.id.startsWith('custom-wp-'));
+        MEDIEVAL_DATA.writingPromptsList.unshift(...data);
+        if(this.currentView === 'writing') this.filterWriting(this.writingSearchQuery || '');
+      });
     }
   }
 
   saveStorageData(key, dataFilter) {
     try {
       localStorage.setItem(key, JSON.stringify(dataFilter));
+      if(window.FirestoreSync) {
+        window.FirestoreSync.save(key, dataFilter);
+      }
     } catch (e) {
       console.warn(`Could not save data for ${key}`, e);
     }

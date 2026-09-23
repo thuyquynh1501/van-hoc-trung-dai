@@ -92,15 +92,27 @@ class DocumentManager {
   loadFromStorage() {
     try {
       const storedDocs = localStorage.getItem('MEDIEVAL_DOCUMENTS');
-      if (storedDocs) {
-        this.documents = JSON.parse(storedDocs);
-      }
+      if (storedDocs) this.documents = JSON.parse(storedDocs);
+
       const storedMethods = localStorage.getItem('MEDIEVAL_TEACHING_METHODS');
-      if (storedMethods) {
-        this.teachingMethods = JSON.parse(storedMethods);
-      }
+      if (storedMethods) this.teachingMethods = JSON.parse(storedMethods);
     } catch (e) {
-      console.warn("Could not load documents/methods from LocalStorage", e);
+      console.warn("Could not load docs from LocalStorage", e);
+    }
+    
+    if (window.FirestoreSync) {
+      FirestoreSync.listen('MEDIEVAL_DOCUMENTS', (data) => {
+        if (data) {
+          this.documents = data;
+          this.renderDocumentsView();
+        }
+      });
+      FirestoreSync.listen('MEDIEVAL_TEACHING_METHODS', (data) => {
+        if (data) {
+          this.teachingMethods = data;
+          this.renderDocumentsView();
+        }
+      });
     }
   }
 
@@ -108,8 +120,13 @@ class DocumentManager {
     try {
       localStorage.setItem('MEDIEVAL_DOCUMENTS', JSON.stringify(this.documents));
       localStorage.setItem('MEDIEVAL_TEACHING_METHODS', JSON.stringify(this.teachingMethods));
+      
+      if (window.FirestoreSync) {
+        FirestoreSync.save('MEDIEVAL_DOCUMENTS', this.documents);
+        FirestoreSync.save('MEDIEVAL_TEACHING_METHODS', this.teachingMethods);
+      }
     } catch (e) {
-      console.warn("Could not save documents/methods to LocalStorage", e);
+      console.warn("Could not save docs to LocalStorage", e);
     }
   }
 

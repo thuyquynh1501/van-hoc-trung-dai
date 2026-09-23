@@ -15,4 +15,4 @@ Write-Host "Creating Public GitHub Repository and Pushing..."
 & $gh repo create van-hoc-trung-dai --public --source=. --remote=origin --push
 
 Write-Host "Enabling GitHub Pages..."
-& $gh api -X POST repos/chienvo141296-sys/van-hoc-trung-dai/pages -f source='{"branch":"master","path":"/"}'
+& $gh api -X POST repos/thuyquynh1501/van-hoc-trung-dai/pages -f source='{"branch":"master","path":"/"}'

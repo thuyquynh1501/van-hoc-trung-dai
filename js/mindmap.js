@@ -22,14 +22,26 @@ class AcademicToolkit {
     } catch (e) {
       console.warn("Could not load comparative pairs from LocalStorage", e);
     }
+    
+    if (window.FirestoreSync) {
+      FirestoreSync.listen('MEDIEVAL_COMPARATIVE_PAIRS', (data) => {
+        if (!data) return;
+        MEDIEVAL_DATA.comparativePairs = MEDIEVAL_DATA.comparativePairs.filter(p => !p.id.startsWith('custom-comp-'));
+        MEDIEVAL_DATA.comparativePairs.push(...data);
+        this.renderComparativeList();
+      });
+    }
   }
 
   saveCustomComparativePairsToStorage() {
     try {
       const customPairs = MEDIEVAL_DATA.comparativePairs.filter(p => p.id.startsWith('custom-comp-'));
       localStorage.setItem('MEDIEVAL_COMPARATIVE_PAIRS', JSON.stringify(customPairs));
+      if (window.FirestoreSync) {
+        FirestoreSync.save('MEDIEVAL_COMPARATIVE_PAIRS', customPairs);
+      }
     } catch (e) {
-      console.warn("Could not save comparative pairs to LocalStorage", e);
+      console.warn("Could not save custom pairs", e);
     }
   }
 
