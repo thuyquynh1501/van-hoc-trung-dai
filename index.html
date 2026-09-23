@@ -147,5 +147,37 @@
   <script src="js/slides.js"></script>
   <script src="js/reader.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- Modal Thêm Tác Phẩm -->
+  <div id="add-work-modal" class="modal-overlay" style="display:none;" onclick="app.closeAddWorkModal()">
+    <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
+      <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Tác Phẩm Mới</h3>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Tên Tác Phẩm:</label>
+        <input type="text" id="new-work-title" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Tác Giả:</label>
+        <input type="text" id="new-work-author" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Năm / Giai đoạn:</label>
+        <input type="text" id="new-work-year" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Thể loại:</label>
+        <input type="text" id="new-work-genre" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+      </div>
+      <div style="margin-bottom:15px;">
+        <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Mô tả / Tóm tắt:</label>
+        <textarea id="new-work-desc" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+      </div>
+      <div style="text-align:right;">
+        <button class="btn btn-outline" onclick="app.closeAddWorkModal()">Hủy</button>
+        <button class="btn btn-primary" onclick="app.saveNewWork()">Lưu Tác Phẩm</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

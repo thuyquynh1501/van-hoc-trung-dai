@@ -29,21 +29,42 @@ class NomParallelReader {
     if (!container) return;
 
     const linesHtml = work.parallelContent.map(line => {
-      // Process Allusions in text
-      let processedTrans = line.translation;
-      if (line.allusions) {
-        line.allusions.forEach(key => {
-          const allusion = ALLUSIONS_DB[key];
-          if (allusion) {
-            const regex = new RegExp(allusion.term.split(' ')[0], 'gi');
-            processedTrans = processedTrans.replace(regex, (match) => `
-              <span class="allusion-tag" onclick="nomReader.showAllusionModal('${key}')">
-                ${match} <i class="fa-solid fa-circle-info"></i>
-              </span>
-            `);
+      // Process Allusions in text (AUTO-MATCH GLOBAL)
+      let processedTrans = line.translation || '';
+      let processedSino = line.sinoVietnamese || '';
+      let processedNotes = line.notes || '';
+      
+      const allAllusions = Object.assign({}, ALLUSIONS_DB, window.CUSTOM_ALLUSIONS);
+      
+      // Sort keys by length descending to match longest phrases first
+      const keys = Object.keys(allAllusions).sort((a,b) => {
+          let termA = allAllusions[a].term.split('(')[0].trim();
+          let termB = allAllusions[b].term.split('(')[0].trim();
+          return termB.length - termA.length;
+      });
+
+      keys.forEach(key => {
+        const allusion = allAllusions[key];
+        if (allusion && allusion.term) {
+          const rawTerm = allusion.term.split('(')[0].trim();
+          if (rawTerm.length > 1) {
+            // Match whole words to avoid partial matches
+            const regex = new RegExp(`\\b(${rawTerm})\\b`, 'gi');
+            const replacement = `<span class="allusion-tag" onclick="nomReader.showAllusionModal('${key}')">$1 <i class="fa-solid fa-circle-info"></i></span>`;
+            
+            // Only replace if it doesn't already contain our HTML tag to avoid nested spans
+            if (!processedTrans.includes(key)) {
+                processedTrans = processedTrans.replace(regex, replacement);
+            }
+            if (!processedSino.includes(key)) {
+                processedSino = processedSino.replace(regex, replacement);
+            }
+            if (!processedNotes.includes(key)) {
+                processedNotes = processedNotes.replace(regex, replacement);
+            }
           }
-        });
-      }
+        }
+      });
 
       return `
         <div class="parallel-line-card animated-fade-in">
