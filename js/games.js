@@ -53,7 +53,7 @@ class GamesManager {
             <h2 style="font-family:var(--font-heading); font-size:1.8rem; color:var(--primary);"><i class="fa-solid fa-gamepad"></i> Trò Chơi Học Tập & Khởi Động Lớp Học</h2>
             <p style="color:var(--text-muted);">Tích hợp liên kết Kahoot, Quizizz, Wordwall, Quizlet tạo không gian học tập sôi nổi.</p>
           </div>
-          <button class="btn btn-primary" onclick="gamesManager.openAddGameModal()">
+          <button class="btn teacher-only btn-primary" onclick="gamesManager.openAddGameModal()">
             <i class="fa-solid fa-plus"></i> Thêm Link Trò Chơi Mới
           </button>
         </div>
@@ -155,7 +155,7 @@ class GamesManager {
                 <i class="fa-solid fa-copy"></i>
               </button>
             ` : ''}
-            <button class="btn btn-outline" style="padding:8px 12px; color:#DC3545; border-color:#DC3545;" title="Xóa trò chơi" onclick="gamesManager.deleteGame('${game.id}')">
+            <button class="btn teacher-only btn-outline" style="padding:8px 12px; color:#DC3545; border-color:#DC3545;" title="Xóa trò chơi" onclick="gamesManager.deleteGame('${game.id}')">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -173,6 +173,7 @@ class GamesManager {
   }
 
   saveNewGame() {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     const title = document.getElementById('new-game-title').value;
     const platform = document.getElementById('new-game-platform').value;
     const pin = document.getElementById('new-game-pin').value;
@@ -210,6 +211,7 @@ class GamesManager {
   }
 
   deleteGame(gameId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     if (confirm("Bạn có chắc chắn muốn xóa trò chơi này khỏi danh sách?")) {
       this.games = this.games.filter(g => g.id !== gameId);
       this.saveGamesToStorage();

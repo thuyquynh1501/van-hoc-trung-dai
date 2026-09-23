@@ -1194,3 +1194,17 @@ body {
     font-size: 1.8rem;
   }
 }
+
+/* Teacher Mode Auth Classes */
+.teacher-only, .teacher-only-flex, .teacher-only-block {
+    display: none !important;
+}
+html.teacher-mode .teacher-only {
+    display: inline-flex !important;
+}
+html.teacher-mode .teacher-only-flex {
+    display: flex !important;
+}
+html.teacher-mode .teacher-only-block {
+    display: block !important;
+}

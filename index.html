@@ -6,6 +6,27 @@
   <title>Văn Học Trung Đại Việt Nam - Chuẩn Học Thuật & Sư Phạm GDPT 2018</title>
   <meta name="description" content="Trang web lưu trữ tác phẩm, tra cứu dịch song song Chữ Hán - Nôm, giải nghĩa Điển tích, soi luật Bằng-Trắc, kho tài liệu Word/PPT/PDF, kho Slide giảng dạy, liên kết trò chơi Kahoot/Quizizz/Wordwall và bộ tạo so sánh văn bản.">
   
+    <script>
+    window.isTeacher = localStorage.getItem('IS_TEACHER') === 'true';
+    if (window.isTeacher) document.documentElement.classList.add('teacher-mode');
+    
+    function toggleTeacherMode() {
+      if (window.isTeacher) {
+        localStorage.removeItem('IS_TEACHER');
+        alert("Đã thoát chế độ Giáo viên. Hiện đang ở góc nhìn Học sinh.");
+        location.reload();
+      } else {
+        const pass = prompt("Nhập mật khẩu Giáo viên (Mặc định: giaovien123):");
+        if (pass === "giaovien123") {
+          localStorage.setItem('IS_TEACHER', 'true');
+          alert("Xác thực thành công! Đã mở khóa các tính năng quản lý.");
+          location.reload();
+        } else if (pass !== null) {
+          alert("Sai mật khẩu!");
+        }
+      }
+    }
+  </script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
@@ -34,7 +55,7 @@
           <i class="fa-solid fa-scroll"></i>
           <span>Đọc Hán - Nôm & Tra Cứu</span>
         </a>
-        <a class="nav-item" data-view="slide-builder">
+        <a class="nav-item teacher-only-flex" data-view="slide-builder">
           <i class="fa-solid fa-chalkboard-user"></i>
           <span>Slide Giảng Dạy</span>
         </a>
@@ -78,6 +99,12 @@
           <i class="fa-solid fa-circle-half-stroke"></i>
           <span>Chế độ Sáng / Tối</span>
         </button>
+      
+        <button class="theme-toggle-btn" style="margin-top: 10px; border-color: var(--primary); color: var(--primary);" onclick="toggleTeacherMode()">
+          <i class="fa-solid fa-user-shield"></i>
+          <span id="auth-label"></span>
+        </button>
+        <script>document.getElementById('auth-label').innerText = window.isTeacher ? 'Đăng xuất Giáo viên' : 'Đăng nhập Giáo viên';</script>
       </div>
     </aside>
 
@@ -91,7 +118,7 @@
         </div>
 
         <div class="header-actions">
-          <button class="btn btn-outline" onclick="app.renderView('slide-builder')">
+          <button class="btn btn-outline teacher-only" onclick="app.renderView('slide-builder')">
             <i class="fa-solid fa-chalkboard-user"></i> Slide Giảng Dạy
           </button>
           <button class="btn btn-primary" onclick="app.renderView('library')">

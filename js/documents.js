@@ -249,7 +249,7 @@ class DocumentManager {
           <button class="btn btn-outline" style="flex: 1; font-size: 0.8rem; padding: 6px;" onclick="docManager.downloadDoc('${doc.id}')">
             <i class="fa-solid fa-download"></i> Tải Về
           </button>
-          <button class="btn btn-outline" style="padding: 6px 10px; font-size: 0.8rem; color: #DC3545; border-color: #DC3545;" onclick="docManager.deleteDoc('${doc.id}')">
+          <button class="btn teacher-only btn-outline" style="padding: 6px 10px; font-size: 0.8rem; color: #DC3545; border-color: #DC3545;" onclick="docManager.deleteDoc('${doc.id}')">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>
@@ -323,7 +323,7 @@ class DocumentManager {
           <input type="text" placeholder="Tìm phương pháp dạy học..." value="${this.methodSearchQuery}" oninput="docManager.filterMethods(this.value)" style="width:100%; padding:10px 14px 10px 40px; border-radius:20px; border:1px solid var(--border-color); background:var(--bg-card); font-size:0.9rem;">
         </div>
 
-        <button class="btn btn-primary" onclick="docManager.openAddMethodModal()">
+        <button class="btn teacher-only btn-primary" onclick="docManager.openAddMethodModal()">
           <i class="fa-solid fa-plus"></i> Thêm Phương Pháp Mới
         </button>
       </div>
@@ -402,7 +402,7 @@ class DocumentManager {
             </div>
           </div>
 
-          <button class="btn btn-outline" style="font-size:0.8rem; padding:6px 12px;" onclick="docManager.attachFileToMethod('${method.id}')">
+          <button class="btn btn-outline" style="font-size:0.8rem; padding:6px 12px;" class="btn btn-outline teacher-only" onclick="docManager.attachFileToMethod('${method.id}')">
             <i class="fa-solid fa-paperclip"></i> Gắn Tài Liệu Tương Ứng
           </button>
         </div>
@@ -419,6 +419,7 @@ class DocumentManager {
   closeAddMethodModal() { document.getElementById('add-method-modal').style.display = 'none'; }
 
   saveNewMethod() {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     const title = document.getElementById('new-method-title').value;
     const category = document.getElementById('new-method-category').value;
     const desc = document.getElementById('new-method-desc').value;
@@ -446,6 +447,7 @@ class DocumentManager {
   }
 
   deleteMethod(methodId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     if (confirm("Bạn có chắc chắn muốn xóa phương pháp dạy học này?")) {
       this.teachingMethods = this.teachingMethods.filter(m => m.id !== methodId);
       this.saveToStorage();
@@ -454,6 +456,7 @@ class DocumentManager {
   }
 
   attachFileToMethod(methodId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     const docName = prompt("Nhập tên tệp tài liệu cần gắn vào phương pháp này (VD: Giao_an_Thao_luan.docx):");
     if (!docName) return;
 

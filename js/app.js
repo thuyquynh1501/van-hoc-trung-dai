@@ -264,7 +264,7 @@ class MedievalApp {
           </div>
           
           <div style="display:flex; gap:10px;">
-            <button class="btn btn-primary" onclick="app.openNewSlideBuilder()">
+            <button class="btn btn-primary" class="btn btn-outline teacher-only" onclick="app.openNewSlideBuilder()">
               <i class="fa-solid fa-plus"></i> Tạo Bộ Slide Mới
             </button>
           </div>
@@ -310,11 +310,11 @@ class MedievalApp {
           </button>
 
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.82rem;" onclick="app.editSlideDeck('${work.id}')">
+            <button class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.82rem;" class="btn btn-outline teacher-only" onclick="app.editSlideDeck('${work.id}')">
               <i class="fa-solid fa-pen-to-square"></i> Chỉnh Sửa
             </button>
             ${work.id.startsWith('custom-') ? `
-              <button class="btn btn-outline" style="padding:6px 12px; font-size:0.82rem; color:#DC3545; border-color:#DC3545;" onclick="app.deleteSlideDeck('${work.id}')">
+              <button class="btn teacher-only btn-outline" style="padding:6px 12px; font-size:0.82rem; color:#DC3545; border-color:#DC3545;" onclick="app.deleteSlideDeck('${work.id}')">
                 <i class="fa-solid fa-trash"></i>
               </button>
             ` : ''}
@@ -381,6 +381,7 @@ class MedievalApp {
   }
 
   deleteSlideDeck(workId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     if (confirm("Bạn có chắc chắn muốn xóa bộ slide bài giảng này?")) {
       MEDIEVAL_DATA.works = MEDIEVAL_DATA.works.filter(w => w.id !== workId);
       this.saveStorageData('CUSTOM_MEDIEVAL_WORKS', MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-')));
@@ -452,7 +453,7 @@ class MedievalApp {
           <div style="display:flex; gap:8px;">
             ${idx > 0 ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.8rem;" onclick="app.moveSlide(${idx}, -1)"><i class="fa-solid fa-arrow-up"></i> Lên</button>` : ''}
             ${idx < this.builderSlides.length - 1 ? `<button class="btn btn-outline" style="padding:4px 10px; font-size:0.8rem;" onclick="app.moveSlide(${idx}, 1)"><i class="fa-solid fa-arrow-down"></i> Xuống</button>` : ''}
-            <button class="btn btn-outline" style="padding:4px 10px; font-size:0.8rem; color:#DC3545; border-color:#DC3545;" onclick="app.deleteSlide(${idx})"><i class="fa-solid fa-trash"></i> Xóa</button>
+            <button class="btn teacher-only btn-outline" style="padding:4px 10px; font-size:0.8rem; color:#DC3545; border-color:#DC3545;" onclick="app.deleteSlide(${idx})"><i class="fa-solid fa-trash"></i> Xóa</button>
           </div>
         </div>
 
@@ -653,7 +654,7 @@ class MedievalApp {
             <h2 style="font-family:var(--font-heading); font-size:1.8rem; color:var(--primary);"><i class="fa-solid fa-users-viewfinder"></i> Tác Giả Tiêu Biểu</h2>
             <p style="color:var(--text-muted);">Chân dung, phong cách nghệ thuật và các tác phẩm để đời của những đại thi hào dân tộc.</p>
           </div>
-          <button class="btn btn-primary" onclick="app.openAddAuthorModal()">
+          <button class="btn teacher-only btn-primary" onclick="app.openAddAuthorModal()">
             <i class="fa-solid fa-user-plus"></i> Thêm Tác Giả Mới
           </button>
         </div>
@@ -805,7 +806,7 @@ class MedievalApp {
             <h2 style="font-family:var(--font-heading); font-size:1.8rem; color:var(--primary);"><i class="fa-solid fa-timeline"></i> Tiến Trình Lịch Sử (X - XIX)</h2>
             <p style="color:var(--text-muted);">Các giai đoạn phát triển lớn gắn liền với biến thiên lịch sử dựng nước và giữ nước.</p>
           </div>
-          <button class="btn btn-primary" onclick="app.openAddPeriodModal()">
+          <button class="btn teacher-only btn-primary" onclick="app.openAddPeriodModal()">
             <i class="fa-solid fa-plus"></i> Thêm Giai Đoạn Mới
           </button>
         </div>
@@ -933,7 +934,7 @@ class MedievalApp {
             <h2 style="font-family:var(--font-heading); font-size:1.8rem; color:var(--primary);"><i class="fa-solid fa-pen-nib"></i> Kết Nối Tri Thức: Bài Tập Viết Ngắn (150 - 200 Chữ)</h2>
             <p style="color:var(--text-muted);">Rèn luyện kỹ năng viết đoạn văn nghị luận xã hội / văn học theo chuẩn GDPT 2018.</p>
           </div>
-          <button class="btn btn-primary" onclick="app.openAddWritingModal()">
+          <button class="btn teacher-only btn-primary" onclick="app.openAddWritingModal()">
             <i class="fa-solid fa-plus"></i> Thêm Đề Bài Mới
           </button>
         </div>
@@ -1013,6 +1014,7 @@ class MedievalApp {
   closeAddWritingModal() { document.getElementById('add-writing-modal').style.display = 'none'; }
 
   saveNewWritingPrompt() {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     const workTitle = document.getElementById('new-writing-work').value;
     const prompt = document.getElementById('new-writing-prompt').value;
     const outline = document.getElementById('new-writing-outline').value;
@@ -1037,6 +1039,7 @@ class MedievalApp {
   }
 
   deleteWritingPrompt(wpId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
     if (confirm("Bạn có chắc chắn muốn xóa đề bài này?")) {
       MEDIEVAL_DATA.writingPromptsList = MEDIEVAL_DATA.writingPromptsList.filter(wp => wp.id !== wpId);
       this.saveStorageData('CUSTOM_MEDIEVAL_WRITING', MEDIEVAL_DATA.writingPromptsList.filter(wp => wp.id.startsWith('custom-wp-')));
