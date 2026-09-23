@@ -197,6 +197,7 @@ class MedievalApp {
           </div>
         </div>
 
+        <div style="text-align:right; margin-bottom: 15px;"><button class="btn btn-primary teacher-only" onclick="app.openAddWorkModal()"><i class="fa-solid fa-plus"></i> Thêm Tác Phẩm</button></div>
         <div class="works-grid" id="works-grid-container"></div>
       `;
       this.renderWorksGrid();

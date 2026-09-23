@@ -28,7 +28,8 @@ class NomParallelReader {
     const container = document.getElementById('view-reader-container');
     if (!container) return;
 
-    const linesHtml = work.parallelContent.map(line => {
+    const contentLines = work.parallelContent || [];
+    const linesHtml = contentLines.map(line => {
       // Process Allusions in text (AUTO-MATCH GLOBAL)
       let processedTrans = line.translation || '';
       let processedSino = line.sinoVietnamese || '';
@@ -37,7 +38,7 @@ class NomParallelReader {
       const allAllusions = Object.assign({}, ALLUSIONS_DB, window.CUSTOM_ALLUSIONS);
       
       // Sort keys by length descending to match longest phrases first
-      const keys = Object.keys(allAllusions).sort((a,b) => {
+      const keys = Object.keys(allAllusions).filter(k => allAllusions[k] && allAllusions[k].term).sort((a,b) => {
           let termA = allAllusions[a].term.split('(')[0].trim();
           let termB = allAllusions[b].term.split('(')[0].trim();
           return termB.length - termA.length;
