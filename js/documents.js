@@ -10,6 +10,35 @@ class DocumentManager {
     
     this.documents = [
       {
+        id: 'doc-grade10-1',
+        name: 'Giao_an_Tan_Vien_Tu_Phan_Su_Luc_Nang_Luc.docx',
+        type: 'word',
+        size: '1.4 MB',
+        uploadDate: '2026-09-23',
+        description: 'Giáo án Ngữ văn 10: Chuyện chức phán sự đền Tản Viên (Nguyễn Dữ).',
+        methodId: 'method-1',
+        url: '#'
+      },
+      {
+        id: 'doc-grade10-2',
+        name: 'Slide_Bao_Kinh_Canh_Gioi_43_Chuan.pptx',
+        type: 'ppt',
+        size: '5.2 MB',
+        uploadDate: '2026-09-23',
+        description: 'Bài giảng điện tử Gương báu khuyên răn (Cảnh ngày hè) - Nguyễn Trãi.',
+        methodId: 'method-2',
+        url: '#'
+      },
+      {
+        id: 'doc-grade10-3',
+        name: 'Phieu_Hoc_Tap_Tho_Nom_Nguyen_Trai.pdf',
+        type: 'pdf',
+        size: '0.8 MB',
+        uploadDate: '2026-09-23',
+        description: 'Phiếu bài tập tìm hiểu Dục Thúy sơn, Ngôn chí bài 3 và Bạch Đằng hải khẩu.',
+        url: '#'
+      },
+      {
         id: 'doc-1',
         name: 'Giao_an_Binh_Ngo_Dai_Cao_GDPT2018.docx',
         type: 'word',
