@@ -10,6 +10,24 @@ class DocumentManager {
     
     this.documents = [
       {
+        id: 'doc-grade12-1',
+        name: 'Giao_an_Cam_Hoai_Dang_Dung_L12.docx',
+        type: 'word',
+        size: '1.3 MB',
+        uploadDate: '2026-09-23',
+        description: 'Giáo án Ngữ văn 12: Bài thơ Cảm hoài (Nỗi lòng) của Đặng Dung.',
+        url: '#'
+      },
+      {
+        id: 'doc-grade12-2',
+        name: 'PBT_Hai_Khau_Linh_Tu_Doan_Thi_Diem.pdf',
+        type: 'pdf',
+        size: '1.0 MB',
+        uploadDate: '2026-09-23',
+        description: 'Phiếu học tập và hướng dẫn đọc hiểu Hải khẩu linh từ (Đền thiêng cửa bể).',
+        url: '#'
+      },
+      {
         id: 'doc-grade10-1',
         name: 'Giao_an_Tan_Vien_Tu_Phan_Su_Luc_Nang_Luc.docx',
         type: 'word',
