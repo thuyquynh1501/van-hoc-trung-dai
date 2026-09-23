@@ -10,6 +10,33 @@ class DocumentManager {
     
     this.documents = [
       {
+        id: 'doc-grade11-1',
+        name: 'Giao_an_Bai_Ca_Ngat_Nguong.docx',
+        type: 'word',
+        size: '1.5 MB',
+        uploadDate: '2026-09-23',
+        description: 'Giáo án Ngữ văn 11: Bài ca ngất ngưởng (Nguyễn Công Trứ).',
+        url: '#'
+      },
+      {
+        id: 'doc-grade11-2',
+        name: 'Chuyen_De_Truyen_Kieu_Lop_11.pdf',
+        type: 'pdf',
+        size: '3.2 MB',
+        uploadDate: '2026-09-23',
+        description: 'Chuyên đề ôn tập Truyện Kiều: Trao duyên, Chí khí anh hùng.',
+        url: '#'
+      },
+      {
+        id: 'doc-grade11-3',
+        name: 'Phieu_Doc_Tieu_Thanh_Ki.docx',
+        type: 'word',
+        size: '0.5 MB',
+        uploadDate: '2026-09-23',
+        description: 'Phiếu học tập Độc Tiểu Thanh kí và Mộng đắc thái liên.',
+        url: '#'
+      },
+      {
         id: 'doc-grade12-1',
         name: 'Giao_an_Cam_Hoai_Dang_Dung_L12.docx',
         type: 'word',
