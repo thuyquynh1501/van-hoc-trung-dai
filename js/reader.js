@@ -5,14 +5,19 @@
 class NomParallelReader {
   constructor() {
     this.activeWork = null;
-    this.columnVisibility = {
-      han: true,
-      sino: true,
-      trans: true,
-      notes: true
-    };
-    this.selfStudyMode = false;
+    this.columnVisibility = { han: true, sino: true, trans: true, notes: true };
     this.showPoeticMeter = false;
+    this.selfStudyMode = false;
+    
+    window.CUSTOM_ALLUSIONS = JSON.parse(localStorage.getItem('CUSTOM_ALLUSIONS')) || {};
+    if (window.FirestoreSync) {
+      FirestoreSync.listen('CUSTOM_ALLUSIONS', (data) => {
+        if (data) {
+          window.CUSTOM_ALLUSIONS = data;
+          if (this.activeWork) this.loadWorkReader(this.activeWork.id);
+        }
+      });
+    }
   }
 
   loadWorkReader(workId) {
@@ -94,6 +99,12 @@ class NomParallelReader {
           </div>
 
           <div class="reader-controls">
+            <button class="btn btn-outline teacher-only" onclick="nomReader.openAddLineModal('${work.id}')">
+              <i class="fa-solid fa-plus"></i> Thêm Câu Hán-Nôm
+            </button>
+            <button class="btn btn-outline teacher-only" onclick="nomReader.openAddAllusionModal()">
+              <i class="fa-solid fa-book-journal-whills"></i> Thêm Chú Thích
+            </button>
             <button class="btn btn-primary" onclick="academicToolkit.printWorksheet('${work.id}')">
               <i class="fa-solid fa-print"></i> In Phiếu Học Tập
             </button>
@@ -150,7 +161,59 @@ class NomParallelReader {
             <button class="btn btn-primary" onclick="nomReader.closeAllusionModal()">Đóng</button>
           </div>
         </div>
+      
+
+      <!-- CMS Modals -->
+      <div id="add-line-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddLineModal()">
+        <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
+          <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Câu Hán-Nôm Mới</h3>
+          <input type="hidden" id="new-line-work-id">
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Nguyên tác (Hán/Nôm):</label>
+            <input type="text" id="new-line-han" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Phiên âm Hán-Việt:</label>
+            <input type="text" id="new-line-sino" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Dịch nghĩa / Dịch thơ:</label>
+            <textarea id="new-line-trans" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="margin-bottom:15px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Chú giải & Nghệ thuật:</label>
+            <textarea id="new-line-notes" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn btn-outline" onclick="nomReader.closeAddLineModal()">Hủy</button>
+            <button class="btn btn-primary" onclick="nomReader.saveNewLine()">Lưu Câu</button>
+          </div>
+        </div>
       </div>
+
+      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddAllusionModal()">
+        <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
+          <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Điển Tích / Chú Thích</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Từ khóa sẽ tự động được bôi đậm và giải thích trong toàn bộ văn bản.</p>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Từ khóa cần bôi đậm:</label>
+            <input type="text" id="new-al-term" placeholder="VD: Thủy Kiều" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Nguồn gốc / Xuất xứ (Tùy chọn):</label>
+            <input type="text" id="new-al-source" placeholder="VD: Truyện Kiều" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Giải nghĩa:</label>
+            <textarea id="new-al-meaning" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn btn-outline" onclick="nomReader.closeAddAllusionModal()">Hủy</button>
+            <button class="btn btn-primary" onclick="nomReader.saveNewAllusion()">Lưu Chú Thích</button>
+          </div>
+        </div>
+      </div>
+</div>
     `;
   }
 
@@ -166,11 +229,154 @@ class NomParallelReader {
       <div class="poetic-meter-box animated-fade-in">
         <strong><i class="fa-solid fa-highlighter"></i> Phân tích Luật Bằng - Trắc:</strong> ${meterBadges}
         ${item.rhyme ? `<span style="margin-left:14px; font-style:italic; font-size:0.85rem; color:var(--primary);">• Vần chính: "${item.rhyme}"</span>` : ''}
+      
+
+      <!-- CMS Modals -->
+      <div id="add-line-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddLineModal()">
+        <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
+          <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Câu Hán-Nôm Mới</h3>
+          <input type="hidden" id="new-line-work-id">
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Nguyên tác (Hán/Nôm):</label>
+            <input type="text" id="new-line-han" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Phiên âm Hán-Việt:</label>
+            <input type="text" id="new-line-sino" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Dịch nghĩa / Dịch thơ:</label>
+            <textarea id="new-line-trans" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="margin-bottom:15px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Chú giải & Nghệ thuật:</label>
+            <textarea id="new-line-notes" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn btn-outline" onclick="nomReader.closeAddLineModal()">Hủy</button>
+            <button class="btn btn-primary" onclick="nomReader.saveNewLine()">Lưu Câu</button>
+          </div>
+        </div>
       </div>
+
+      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddAllusionModal()">
+        <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
+          <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Điển Tích / Chú Thích</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Từ khóa sẽ tự động được bôi đậm và giải thích trong toàn bộ văn bản.</p>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Từ khóa cần bôi đậm:</label>
+            <input type="text" id="new-al-term" placeholder="VD: Thủy Kiều" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Nguồn gốc / Xuất xứ (Tùy chọn):</label>
+            <input type="text" id="new-al-source" placeholder="VD: Truyện Kiều" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
+          </div>
+          <div style="margin-bottom:10px;">
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px;">Giải nghĩa:</label>
+            <textarea id="new-al-meaning" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
+          </div>
+          <div style="text-align:right;">
+            <button class="btn btn-outline" onclick="nomReader.closeAddAllusionModal()">Hủy</button>
+            <button class="btn btn-primary" onclick="nomReader.saveNewAllusion()">Lưu Chú Thích</button>
+          </div>
+        </div>
+      </div>
+</div>
     `;
   }
 
+
+  openAddLineModal(workId) {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
+    document.getElementById('new-line-work-id').value = workId;
+    document.getElementById('new-line-han').value = '';
+    document.getElementById('new-line-sino').value = '';
+    document.getElementById('new-line-trans').value = '';
+    document.getElementById('new-line-notes').value = '';
+    document.getElementById('add-line-modal').style.display = 'flex';
+  }
+
+  closeAddLineModal() {
+    document.getElementById('add-line-modal').style.display = 'none';
+  }
+
+  saveNewLine() {
+    if (!window.isTeacher) return;
+    const workId = document.getElementById('new-line-work-id').value;
+    const han = document.getElementById('new-line-han').value;
+    const sino = document.getElementById('new-line-sino').value;
+    const trans = document.getElementById('new-line-trans').value;
+    const notes = document.getElementById('new-line-notes').value;
+    
+    if (!trans && !sino) {
+        alert("Vui lòng nhập ít nhất Phiên âm hoặc Dịch nghĩa.");
+        return;
+    }
+
+    const work = MEDIEVAL_DATA.works.find(w => w.id === workId);
+    if (work) {
+        if (!work.parallelContent) work.parallelContent = [];
+        const nextLineNo = work.parallelContent.length > 0 ? work.parallelContent[work.parallelContent.length-1].lineNo + 1 : 1;
+        work.parallelContent.push({
+            lineNo: nextLineNo,
+            hanOriginal: han,
+            sinoVietnamese: sino,
+            translation: trans,
+            notes: notes
+        });
+        
+        // Save to Firebase (works starting with custom-work- are saved automatically by app.js logic)
+        app.saveStorageData('CUSTOM_MEDIEVAL_WORKS', MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-')));
+        
+        this.closeAddLineModal();
+        this.loadWorkReader(workId);
+        alert("Thêm câu thành công!");
+    }
+  }
+
+  openAddAllusionModal() {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền thao tác!'); return; }
+    document.getElementById('new-al-term').value = '';
+    document.getElementById('new-al-source').value = '';
+    document.getElementById('new-al-meaning').value = '';
+    document.getElementById('add-allusion-modal').style.display = 'flex';
+  }
+
+  closeAddAllusionModal() {
+    document.getElementById('add-allusion-modal').style.display = 'none';
+  }
+
+  saveNewAllusion() {
+    if (!window.isTeacher) return;
+    const term = document.getElementById('new-al-term').value;
+    const source = document.getElementById('new-al-source').value;
+    const meaning = document.getElementById('new-al-meaning').value;
+
+    if (!term || !meaning) {
+        alert("Vui lòng nhập Từ khóa và Giải nghĩa.");
+        return;
+    }
+
+    const key = 'custom-al-' + Date.now();
+    window.CUSTOM_ALLUSIONS[key] = {
+        term: term,
+        source: source || "Chú thích của Giáo viên",
+        meaning: meaning,
+        context: "Xem trong văn bản"
+    };
+
+    try {
+        localStorage.setItem('CUSTOM_ALLUSIONS', JSON.stringify(window.CUSTOM_ALLUSIONS));
+        if (window.FirestoreSync) FirestoreSync.save('CUSTOM_ALLUSIONS', window.CUSTOM_ALLUSIONS);
+    } catch(e) { console.warn("Could not save allusions", e); }
+
+    this.closeAddAllusionModal();
+    if (this.activeWork) this.loadWorkReader(this.activeWork.id);
+    alert("Thêm chú thích thành công! Từ khóa sẽ được tự động bôi đậm.");
+  }
+
   showAllusionModal(key) {
+
     const allusion = ALLUSIONS_DB[key];
     if (!allusion) return;
 
