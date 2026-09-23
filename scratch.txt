@@ -1,0 +1,10 @@
+đoạn trích**: Thuộc phần mở đầu 'Gặp gỡ và đính ước'.",
+            "**Thể thơ**: Lục bát Nôm."
+          ],
+          teacherNotes: "Hướng dẫn học sinh đọc diễn cảm."
+        }
+      ]
+    }
+  ],
+
+  

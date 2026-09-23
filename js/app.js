@@ -300,7 +300,7 @@ class MedievalApp {
             <span class="work-year">${work.year}</span>
           </div>
           <h3 class="work-title">${work.title}</h3>
-          <p class="work-author">Tác giả / GV: ${work.authorName}</p>
+          <p class="work-author">Tác giả: ${work.authorName}</p>
           <p class="work-desc">${work.description}</p>
         </div>
 
@@ -414,7 +414,7 @@ class MedievalApp {
             <input type="text" id="builder-work-title" value="${defaultTitle}" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
           </div>
           <div>
-            <label style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:4px;">Tác Giả / GV:</label>
+            <label style="display:block; font-weight:600; font-size:0.88rem; margin-bottom:4px;">Tác Giả:</label>
             <input type="text" id="builder-work-author" value="${defaultAuthor}" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);">
           </div>
           <div>
