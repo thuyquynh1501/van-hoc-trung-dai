@@ -1059,6 +1059,50 @@ class MedievalApp {
     this.renderWorksGrid();
   }
 
+  openAddWorkModal() {
+    if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền!'); return; }
+    document.getElementById('new-work-title').value = '';
+    document.getElementById('new-work-author').value = '';
+    document.getElementById('new-work-year').value = '';
+    document.getElementById('new-work-genre').value = '';
+    document.getElementById('new-work-desc').value = '';
+    document.getElementById('add-work-modal').style.display = 'flex';
+  }
+
+  closeAddWorkModal() {
+    document.getElementById('add-work-modal').style.display = 'none';
+  }
+
+  saveNewWork() {
+    if (!window.isTeacher) return;
+    const title = document.getElementById('new-work-title').value;
+    const author = document.getElementById('new-work-author').value;
+    const year = document.getElementById('new-work-year').value;
+    const genre = document.getElementById('new-work-genre').value;
+    const desc = document.getElementById('new-work-desc').value;
+
+    if (!title || !author) { alert("Vui lòng nhập Tên và Tác giả!"); return; }
+
+    const newWork = {
+      id: "custom-work-" + Date.now(),
+      title: title,
+      authorName: author,
+      year: year || "Chưa rõ",
+      periodId: "p1", // Mặc định
+      genre: genre || "Chưa phân loại",
+      description: desc || "Tác phẩm do giáo viên thêm.",
+      parallelContent: [],
+      slides: []
+    };
+
+    MEDIEVAL_DATA.works.unshift(newWork);
+    this.saveStorageData('CUSTOM_MEDIEVAL_WORKS', MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-')));
+    
+    this.closeAddWorkModal();
+    this.renderView('library');
+    alert("Thêm tác phẩm thành công! Bạn có thể chọn 'Đọc Hán-Nôm' để thêm văn bản.");
+  }
+
   renderWorksGrid() {
     const container = document.getElementById('works-grid-container');
     if (!container) return;
