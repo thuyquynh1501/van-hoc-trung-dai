@@ -697,8 +697,43 @@ body {
 
 .reader-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .reader-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.reader-notes-full {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.han-character-box {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.han-character-box:hover {
+  background: var(--accent);
+  color: #FFF;
 }
 
 .parallel-line-card {
