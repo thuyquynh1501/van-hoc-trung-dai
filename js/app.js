@@ -1272,8 +1272,8 @@ class MedievalApp {
           <button class="btn btn-outline" onclick="app.openWorkReader('${work.id}')">
             <i class="fa-solid fa-book-open"></i> Đọc Hán-Nôm
           </button>
-          <button class="btn btn-accent" onclick="slideEngine.openPresentation('${work.id}')">
-            <i class="fa-solid fa-display"></i> Trình Chiếu Slide (${work.slides ? work.slides.length : 0})
+          <button class="btn btn-outline teacher-only" style="color:#DC3545; border-color:#DC3545;" onclick="app.deleteWork('${work.id}')">
+            <i class="fa-solid fa-trash"></i> Xóa
           </button>
         </div>
       </div>
@@ -1283,6 +1283,27 @@ class MedievalApp {
   openWorkReader(workId) {
     this.renderView('reader');
     nomReader.loadWorkReader(workId);
+  }
+
+  deleteWork(workId) {
+    if (!window.isTeacher) {
+      alert("Chỉ giáo viên mới có quyền xóa tác phẩm!");
+      return;
+    }
+    
+    if (confirm("Bạn có chắc chắn muốn xóa tác phẩm này khỏi Thư viện không?")) {
+      const idx = MEDIEVAL_DATA.works.findIndex(w => w.id === workId);
+      if (idx !== -1) {
+        MEDIEVAL_DATA.works.splice(idx, 1);
+        
+        // Save the updated custom works to local storage
+        const customWorks = MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-'));
+        this.saveStorageData('CUSTOM_MEDIEVAL_WORKS', customWorks);
+        
+        this.renderWorksGrid();
+        alert("Đã xóa tác phẩm!");
+      }
+    }
   }
 
   checkQuizAnswer(quizId, selectedIdx) {
