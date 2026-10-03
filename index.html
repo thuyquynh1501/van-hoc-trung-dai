@@ -16,8 +16,8 @@
         alert("Đã thoát chế độ Giáo viên. Hiện đang ở góc nhìn Học sinh.");
         location.reload();
       } else {
-        const pass = prompt("Nhập mật khẩu Giáo viên (Mặc định: giaovien123):");
-        if (pass === "giaovien123") {
+        const pass = prompt("Nhập mật khẩu Giáo viên:");
+        if (pass === "Thuyquynh1501") {
           localStorage.setItem('IS_TEACHER', 'true');
           alert("Xác thực thành công! Đã mở khóa các tính năng quản lý.");
           location.reload();
