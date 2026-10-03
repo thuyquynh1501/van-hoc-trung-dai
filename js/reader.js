@@ -186,7 +186,7 @@ class NomParallelReader {
       
 
       <!-- CMS Modals -->
-      <div id="add-line-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddLineModal()">
+      <div id="add-line-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Câu Hán-Nôm Mới</h3>
           <input type="hidden" id="new-line-work-id">
@@ -207,13 +207,13 @@ class NomParallelReader {
             <textarea id="new-line-notes" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" onclick="nomReader.closeAddLineModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewLine()">Lưu Câu</button>
           </div>
         </div>
       </div>
 
-      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddAllusionModal()">
+      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Điển Tích / Chú Thích</h3>
           <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Từ khóa sẽ tự động được bôi đậm và giải thích trong toàn bộ văn bản.</p>
@@ -230,7 +230,7 @@ class NomParallelReader {
             <textarea id="new-al-meaning" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" onclick="nomReader.closeAddAllusionModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewAllusion()">Lưu Chú Thích</button>
           </div>
         </div>
@@ -254,7 +254,7 @@ class NomParallelReader {
       
 
       <!-- CMS Modals -->
-      <div id="add-line-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddLineModal()">
+      <div id="add-line-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Câu Hán-Nôm Mới</h3>
           <input type="hidden" id="new-line-work-id">
@@ -275,13 +275,13 @@ class NomParallelReader {
             <textarea id="new-line-notes" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" onclick="nomReader.closeAddLineModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewLine()">Lưu Câu</button>
           </div>
         </div>
       </div>
 
-      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" onclick="nomReader.closeAddAllusionModal()">
+      <div id="add-allusion-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:15px;">Thêm Điển Tích / Chú Thích</h3>
           <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Từ khóa sẽ tự động được bôi đậm và giải thích trong toàn bộ văn bản.</p>
@@ -298,7 +298,7 @@ class NomParallelReader {
             <textarea id="new-al-meaning" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" onclick="nomReader.closeAddAllusionModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewAllusion()">Lưu Chú Thích</button>
           </div>
         </div>

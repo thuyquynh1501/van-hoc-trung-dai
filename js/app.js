@@ -670,7 +670,7 @@ class MedievalApp {
         </div>
       </div>
 
-      <div id="add-author-modal" class="modal-overlay" style="display:none;" onclick="app.closeAddAuthorModal()">
+      <div id="add-author-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()" style="max-width:600px;">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-user-plus"></i> Thêm Hồ Sơ Tác Giả Mới</h3>
           
@@ -712,7 +712,7 @@ class MedievalApp {
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:10px;">
-            <button class="btn btn-outline" onclick="app.closeAddAuthorModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="app.saveNewAuthor()">Lưu Hồ Sơ Tác Giả</button>
           </div>
         </div>
@@ -822,7 +822,7 @@ class MedievalApp {
         </div>
       </div>
 
-      <div id="add-period-modal" class="modal-overlay" style="display:none;" onclick="app.closeAddPeriodModal()">
+      <div id="add-period-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()" style="max-width:580px;">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-timeline"></i> Thêm Giai Đoạn Lịch Sử Mới</h3>
           
@@ -847,7 +847,7 @@ class MedievalApp {
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:10px;">
-            <button class="btn btn-outline" onclick="app.closeAddPeriodModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="app.saveNewPeriod()">Lưu Giai Đoạn</button>
           </div>
         </div>
@@ -950,7 +950,7 @@ class MedievalApp {
         </div>
       </div>
 
-      <div id="add-writing-modal" class="modal-overlay" style="display:none;" onclick="app.closeAddWritingModal()">
+      <div id="add-writing-modal" class="modal-overlay" style="display:none;" >
         <div class="modal-card animated-fade-in" onclick="event.stopPropagation()" style="max-width:580px;">
           <h3 style="font-family:var(--font-heading); color:var(--primary); margin-bottom:16px;"><i class="fa-solid fa-pen-nib"></i> Thêm Đề Bài Viết Ngắn Mới</h3>
           
@@ -970,7 +970,7 @@ class MedievalApp {
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:10px;">
-            <button class="btn btn-outline" onclick="app.closeAddWritingModal()">Hủy</button>
+            <button class="btn btn-outline" >Hủy</button>
             <button class="btn btn-primary" onclick="app.saveNewWritingPrompt()">Lưu Đề Bài</button>
           </div>
         </div>
@@ -1059,6 +1059,23 @@ class MedievalApp {
     this.renderWorksGrid();
   }
 
+  editWork(workId) {
+    if (!window.isTeacher) return;
+    const work = MEDIEVAL_DATA.works.find(w => w.id === workId);
+    if (!work) return;
+
+    document.getElementById('new-work-title').value = work.title || '';
+    document.getElementById('new-work-author').value = work.authorName || '';
+    document.getElementById('new-work-year').value = work.year || '';
+    document.getElementById('new-work-genre').value = work.genre || '';
+    document.getElementById('new-work-desc').value = work.description || '';
+    
+    const modal = document.getElementById('add-work-modal');
+    modal.dataset.editId = workId;
+    modal.querySelector('h3').innerText = "Chỉnh Sửa Tác Phẩm";
+    modal.style.display = 'flex';
+  }
+
   openAddWorkModal() {
     if (!window.isTeacher) { alert('Chỉ giáo viên mới có quyền!'); return; }
     document.getElementById('new-work-title').value = '';
@@ -1066,7 +1083,11 @@ class MedievalApp {
     document.getElementById('new-work-year').value = '';
     document.getElementById('new-work-genre').value = '';
     document.getElementById('new-work-desc').value = '';
-    document.getElementById('add-work-modal').style.display = 'flex';
+    
+    const modal = document.getElementById('add-work-modal');
+    delete modal.dataset.editId;
+    modal.querySelector('h3').innerText = "Thêm Tác Phẩm Mới";
+    modal.style.display = 'flex';
   }
 
   closeAddWorkModal() {
@@ -1083,24 +1104,41 @@ class MedievalApp {
 
     if (!title || !author) { alert("Vui lòng nhập Tên và Tác giả!"); return; }
 
-    const newWork = {
-      id: "custom-work-" + Date.now(),
-      title: title,
-      authorName: author,
-      year: year || "Chưa rõ",
-      periodId: "p1", // Mặc định
-      genre: genre || "Chưa phân loại",
-      description: desc || "Tác phẩm do giáo viên thêm.",
-      parallelContent: [],
-      slides: []
-    };
+    const modal = document.getElementById('add-work-modal');
+    const editId = modal.dataset.editId;
 
-    MEDIEVAL_DATA.works.unshift(newWork);
+    if (editId) {
+      // Update existing work
+      const work = MEDIEVAL_DATA.works.find(w => w.id === editId);
+      if (work) {
+        work.title = title;
+        work.authorName = author;
+        work.year = year || work.year;
+        work.genre = genre || work.genre;
+        work.description = desc || work.description;
+      }
+      alert("Cập nhật tác phẩm thành công!");
+    } else {
+      // Create new work
+      const newWork = {
+        id: "custom-work-" + Date.now(),
+        title: title,
+        authorName: author,
+        year: year || "Chưa rõ",
+        periodId: "p1",
+        genre: genre || "Chưa phân loại",
+        description: desc || "Tác phẩm do giáo viên thêm.",
+        parallelContent: [],
+        slides: []
+      };
+      MEDIEVAL_DATA.works.unshift(newWork);
+      alert("Thêm tác phẩm thành công! Bạn có thể chọn 'Đọc Hán-Nôm' để thêm văn bản.");
+    }
+
     this.saveStorageData('CUSTOM_MEDIEVAL_WORKS', MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-')));
     
     this.closeAddWorkModal();
     this.renderView('library');
-    alert("Thêm tác phẩm thành công! Bạn có thể chọn 'Đọc Hán-Nôm' để thêm văn bản.");
   }
 
   renderWorksGrid() {
@@ -1137,6 +1175,9 @@ class MedievalApp {
         </div>
 
         <div class="work-actions">
+          <button class="btn btn-outline teacher-only" onclick="app.editWork('${work.id}')" title="Chỉnh sửa thông tin">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
           <button class="btn btn-outline" onclick="app.openWorkReader('${work.id}')">
             <i class="fa-solid fa-book-open"></i> Đọc Hán-Nôm
           </button>
