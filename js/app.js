@@ -1302,6 +1302,10 @@ class MedievalApp {
         
         this.renderWorksGrid();
         alert("Đã xóa tác phẩm!");
+        
+        if (this.currentView === 'reader') {
+          this.renderView('library');
+        }
       }
     }
   }

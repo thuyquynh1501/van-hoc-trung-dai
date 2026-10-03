@@ -142,8 +142,8 @@ class NomParallelReader {
             <button class="btn btn-primary" onclick="academicToolkit.printWorksheet('${work.id}')">
               <i class="fa-solid fa-print"></i> In Phiếu Học Tập
             </button>
-            <button class="btn btn-accent" onclick="slideEngine.openPresentation('${work.id}')">
-              <i class="fa-solid fa-circle-play"></i> Trình Chiếu Slide
+            <button class="btn btn-outline teacher-only" style="color:#DC3545; border-color:#DC3545;" onclick="app.deleteWork('${work.id}')">
+              <i class="fa-solid fa-trash"></i> Xóa Tác Phẩm
             </button>
             <a href="${work.nomDictionaryLink || 'https://nomfoundation.org/'}" target="_blank" class="btn btn-outline">
               <i class="fa-solid fa-magnifying-glass"></i> Tra Từ Điển Nôm
@@ -157,7 +157,8 @@ class NomParallelReader {
             <span style="font-weight: 600; font-size: 0.88rem;">Chế độ hiển thị:</span>
             <label style="cursor:pointer; font-size:0.85rem;"><input type="checkbox" checked onchange="nomReader.toggleColumn('han', this.checked)"> Hán/Nôm</label>
             <label style="cursor:pointer; font-size:0.85rem;"><input type="checkbox" checked onchange="nomReader.toggleColumn('sino', this.checked)"> Phiên âm</label>
-            <label style="cursor:pointer; font-size:0.85rem;"><input type="checkbox" checked onchange="nomReader.toggleColumn('trans', this.checked)"> Dịch nghĩa</label>
+            <label style="cursor:pointer; font-size:0.85rem;"><input type="checkbox" checked onchange="nomReader.toggleColumn('trans', this.checked)"> Dịch nghĩa / Thơ</label>
+            <label style="cursor:pointer; font-size:0.85rem;"><input type="checkbox" checked onchange="nomReader.toggleColumn('notes', this.checked)"> Chú giải</label>
           </div>
 
           <div style="display:flex; gap:12px; margin-left:auto;">
