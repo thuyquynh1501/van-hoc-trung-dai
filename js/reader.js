@@ -196,7 +196,7 @@ class NomParallelReader {
             <button class="btn btn-primary" onclick="nomReader.closeAllusionModal()">Đóng</button>
           </div>
         </div>
-      
+      </div>
 
       <!-- CMS Modals -->
       <div id="add-line-modal" class="modal-overlay" style="display:none;" >
@@ -228,7 +228,7 @@ class NomParallelReader {
             <textarea id="new-line-notes" rows="2" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" >Hủy</button>
+            <button class="btn btn-outline" onclick="nomReader.closeAddLineModal()">Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewLine()">Lưu Câu</button>
           </div>
         </div>
@@ -251,7 +251,7 @@ class NomParallelReader {
             <textarea id="new-al-meaning" rows="3" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-parchment);"></textarea>
           </div>
           <div style="text-align:right;">
-            <button class="btn btn-outline" >Hủy</button>
+            <button class="btn btn-outline" onclick="nomReader.closeAddAllusionModal()">Hủy</button>
             <button class="btn btn-primary" onclick="nomReader.saveNewAllusion()">Lưu Chú Thích</button>
           </div>
         </div>
