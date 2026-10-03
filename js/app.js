@@ -728,6 +728,11 @@ class MedievalApp {
 
     this.saveStorageData('CUSTOM_MEDIEVAL_WORKS', MEDIEVAL_DATA.works.filter(w => w.id.startsWith('custom-')));
 
+    const customSlides = MEDIEVAL_DATA.works
+      .filter(w => !w.id.startsWith('custom-') && w.slides && w.slides.length > 0)
+      .map(w => ({ workId: w.id, slides: w.slides }));
+    this.saveStorageData('CUSTOM_MEDIEVAL_SLIDES', customSlides);
+
     alert(`Đã lưu thành công bộ ${this.builderSlides.length} Slide bài giảng "${title}"!`);
     this.renderView('slide-builder');
   }
